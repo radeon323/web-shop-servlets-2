@@ -33,11 +33,7 @@ public class AddProductServlet extends HttpServlet {
         try {
             String name = request.getParameter("name");
             if(name != null && name.length() > 0 && request.getParameter("price") != null) {
-                Product product = Product.builder()
-                        .name(request.getParameter("name"))
-                        .price(Double.parseDouble(request.getParameter("price")))
-                        .creationDate(LocalDateTime.now().withNano(0).withSecond(0))
-                        .build();
+                Product product = getProduct(request);
                 productService.add(product);
 
                 String msgSuccess = "Product <i>" + name + "</i> was successfully added!";
@@ -59,6 +55,14 @@ public class AddProductServlet extends HttpServlet {
         }
     }
 
+    private Product getProduct(HttpServletRequest request) {
+        Product product = Product.builder()
+                .name(request.getParameter("name"))
+                .price(Double.parseDouble(request.getParameter("price")))
+                .creationDate(LocalDateTime.now().withNano(0).withSecond(0))
+                .build();
+        return product;
+    }
 
 
 }

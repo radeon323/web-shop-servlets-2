@@ -16,7 +16,6 @@ import java.util.Map;
  */
 public class AddProductServlet extends HttpServlet {
     private final ProductService productService;
-    private final PageGenerator instance = PageGenerator.instance();
 
     public AddProductServlet(ProductService productService) {
         this.productService = productService;
@@ -24,7 +23,7 @@ public class AddProductServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String page = instance.getPage("add_product.html");
+        String page = PageGenerator.getPage("add_product.html");
         response.getWriter().println(page);
     }
 
@@ -38,19 +37,19 @@ public class AddProductServlet extends HttpServlet {
 
                 String msgSuccess = "Product <i>" + name + "</i> was successfully added!";
                 Map<String, Object> parameters = Map.of("msgSuccess", msgSuccess);
-                String page = instance.getPage("add_product.html", parameters);
+                String page = PageGenerator.getPage("add_product.html", parameters);
                 response.getWriter().write(page);
 
             } else {
                 String errorMsg = "Please fill up all fields!";
                 Map<String, Object> parameters = Map.of("errorMsg", errorMsg);
-                String pageError = instance.getPage("add_product.html", parameters);
+                String pageError = PageGenerator.getPage("add_product.html", parameters);
                 response.getWriter().write(pageError);
             }
         } catch (Exception e) {
             String errorMsg = "Please fill up all fields!";
             Map<String, Object> parameters = Map.of("errorMsg", errorMsg);
-            String pageError = instance.getPage("add_product.html", parameters);
+            String pageError = PageGenerator.getPage("add_product.html", parameters);
             response.getWriter().write(pageError);
         }
     }

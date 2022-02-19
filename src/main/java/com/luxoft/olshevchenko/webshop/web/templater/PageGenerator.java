@@ -12,33 +12,21 @@ import java.util.Map;
 
 
 public class PageGenerator {
-    private static final String HTML_DIR = "src/main/resources/templates";
+    private static final String HTML_DIR = PropertiesReader.getProperties().getProperty("html_directory");
+    private static final Configuration cfg = new Configuration();
 
-    private static PageGenerator pageGenerator;
-    private final Configuration cfg;
-
-    private PageGenerator() {
-        cfg = new Configuration();
-    }
-
-    public static PageGenerator instance() {
-        if (pageGenerator == null)
-            pageGenerator = new PageGenerator();
-        return pageGenerator;
-    }
-
-    public String getPage(String filename, Map<String, Object> data) {
-        Writer stream = new StringWriter();
+    public static String getPage(String filename, Map<String, Object> data) {
         try {
+            Writer stream = new StringWriter();
             Template template = cfg.getTemplate(HTML_DIR + File.separator + filename);
             template.process(data, stream);
+            return stream.toString();
         } catch (IOException | TemplateException e) {
             throw new RuntimeException(e);
         }
-        return stream.toString();
     }
 
-    public String getPage(String filename) {
+    public static String getPage(String filename) {
         return getPage(filename, Collections.emptyMap());
     }
 

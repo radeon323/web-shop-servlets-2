@@ -16,7 +16,6 @@ import java.util.List;
  */
 public class ShowAllProductsServlet extends HttpServlet {
     private final ProductService productService;
-    private final PageGenerator instance = PageGenerator.instance();
 
     public ShowAllProductsServlet(ProductService productService) {
         this.productService = productService;
@@ -28,7 +27,7 @@ public class ShowAllProductsServlet extends HttpServlet {
         HashMap<String, Object> parameters = new HashMap<>();
         parameters.put("products", products);
 
-        String page = instance.getPage("products_list.html", parameters);
+        String page = PageGenerator.getPage("products_list.html", parameters);
         response.getWriter().write(page);
     }
 
@@ -47,7 +46,7 @@ public class ShowAllProductsServlet extends HttpServlet {
             String msgSuccess = "Product " + product.getName() + " was successfully deleted!";
             parameters.put("msgSuccess", msgSuccess);
 
-            String page = instance.getPage("products_list.html", parameters);
+            String page = PageGenerator.getPage("products_list.html", parameters);
             response.getWriter().write(page);
 
         } catch (IOException e) {

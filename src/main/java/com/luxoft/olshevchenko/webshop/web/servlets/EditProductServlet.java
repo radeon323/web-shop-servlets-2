@@ -15,7 +15,6 @@ import java.util.HashMap;
  */
 public class EditProductServlet extends HttpServlet {
     private ProductService productService;
-    private final PageGenerator instance = PageGenerator.instance();
 
     public EditProductServlet(ProductService productService) {
         this.productService = productService;
@@ -28,7 +27,7 @@ public class EditProductServlet extends HttpServlet {
         HashMap<String, Object> parameters = new HashMap<>();
         parameters.put("product", product);
 
-        String page = instance.getPage("edit_product.html", parameters);
+        String page = PageGenerator.getPage("edit_product.html", parameters);
         response.getWriter().write(page);
     }
 
@@ -47,13 +46,13 @@ public class EditProductServlet extends HttpServlet {
 
                 String msgSuccess = "Product <i>" + name + "</i> was successfully changed!";
                 parameters.put("msgSuccess", msgSuccess);
-                String page = instance.getPage("edit_product.html", parameters);
+                String page = PageGenerator.getPage("edit_product.html", parameters);
                 response.getWriter().write(page);
 
             } else {
                 String errorMsg = "Please fill up all fields";
                 parameters.put("errorMsg", errorMsg);
-                String page = instance.getPage("edit_product.html", parameters);
+                String page = PageGenerator.getPage("edit_product.html", parameters);
                 response.getWriter().write(page);
             }
         } catch (Exception e) {

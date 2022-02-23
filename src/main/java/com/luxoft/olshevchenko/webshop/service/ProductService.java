@@ -3,7 +3,6 @@ package com.luxoft.olshevchenko.webshop.service;
 import com.luxoft.olshevchenko.webshop.dao.ProductDao;
 import com.luxoft.olshevchenko.webshop.entity.Product;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -11,7 +10,7 @@ import java.util.List;
  */
 public class ProductService {
 
-    private ProductDao productDao;
+    private final ProductDao productDao;
 
     public ProductService(ProductDao productDao) {
         this.productDao = productDao;
@@ -26,7 +25,6 @@ public class ProductService {
     }
 
     public void add(Product product) {
-        product.setCreationDate(LocalDateTime.now());
         productDao.add(product);
     }
 

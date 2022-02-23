@@ -16,6 +16,30 @@
 <h1 align="center">Products List</h1>
 </br>
 
+<div class="container">
+    <div class="row">
+
+<div class="d-flex flex-row-reverse justify-content-between align-items-center">
+    <div class="p-2">
+        <#if login == "false">
+        <a href="/login" class="btn btn-outline-dark">Login</a>
+        <#else>
+        <a href="/users/edit?id=${userId}" class="btn btn-outline-dark">Edit Personal Info</a> <a href="/logout" class="btn btn-outline-dark">Logout</a>
+        </#if>
+    </div>
+    <div class="p-2 " >
+        <#if login == "false">
+        <strong>You are not logged yet!</strong>
+        <#else>
+        <strong>Logged as: ${email}</strong>
+        </#if>
+    </div>
+</div>
+
+
+</div>
+</div>
+
 
 
 <div class="container ">
@@ -36,19 +60,24 @@
                         <th scope="row">${product.id}</th>
                         <td>${product.name}</td>
                         <td>${product.price?string["0.00"]}</td>
-                        <td>${product.creationDate}</td>
+                        <td>${product.creationDate?datetime("yyyy-MM-dd")?string["dd.MM.yyyy, HH:mm"]}</td>
                         <td>
+                            <#if login == "true">
                             <form method="post" action='/products/delete' style="display:inline;" >
                                 <input type="hidden" name="id" value="${product.id}">
                                 <input type="submit" value="Delete" class="btn btn-outline-dark" id="btn" >
                             </form>
-
                             <a href='/products/edit?id=${product.id}' type="button" class="btn btn-outline-dark">Edit</a>
+                            <#else>
+                            Please, log in to have all permisssions!
+                            </#if>
                         </td>
                     </tr>
         </#list>
         </tbody>
     </table>
+
+
 
 <div align="center">
     </br>
@@ -63,8 +92,7 @@
         <p align='center'><a href='/'>to product list -></a></p>
     </div>
     <#else>
-</#if>
-
+    </#if>
 </div>
 
 <!-- Optional JavaScript; choose one of the two! -->

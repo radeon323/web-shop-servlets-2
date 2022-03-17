@@ -1,5 +1,6 @@
 package com.luxoft.olshevchenko.webshop.web.servlets;
 
+import com.luxoft.olshevchenko.webshop.entity.Product;
 import com.luxoft.olshevchenko.webshop.entity.User;
 import com.luxoft.olshevchenko.webshop.service.SecurityService;
 import com.luxoft.olshevchenko.webshop.service.UserService;
@@ -9,6 +10,7 @@ import lombok.SneakyThrows;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -36,6 +38,7 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+        List<Product> cart = new ArrayList<>();
 
         if(userService.isUserExist(email)) {
             User user = userService.findByEmail(email);
@@ -55,12 +58,14 @@ public class LoginServlet extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.setAttribute("email", email);
                 session.setAttribute("userId", id);
+                session.setAttribute("cart", cart);
                 session.setMaxInactiveInterval(-1);
                 Cookie cookie = new Cookie("user-token", userToken);
 
+                cookie.setMaxAge(3600);
                 response.addCookie(cookie);
 
-                response.sendRedirect("/");
+                response.sendRedirect("/products");
 
             } else {
                 String errorMsg = "Please enter correct password. <a href='/login'> Forgot password?</a>";

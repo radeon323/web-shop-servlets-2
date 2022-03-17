@@ -35,14 +35,13 @@ public class EditProductServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         HashMap<String, Object> parameters = new HashMap<>();
         try {
             Optional<Product> optionalProduct = validateAndGetProduct(request, response, parameters);
             optionalProduct.ifPresent(product -> editProduct(product, response, parameters));
         } catch (Exception e) {
-            String errorMsg = "Please fill up all fields";
-            response.getWriter().println(errorMsg);
+            writeErrorResponse(response);
         }
     }
 

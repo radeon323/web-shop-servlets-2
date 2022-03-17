@@ -3,7 +3,6 @@ package com.luxoft.olshevchenko.webshop.service;
 import com.luxoft.olshevchenko.webshop.dao.UserDao;
 import com.luxoft.olshevchenko.webshop.entity.User;
 
-import java.sql.SQLException;
 
 /**
  * @author Oleksandr Shevchenko

@@ -30,17 +30,17 @@ public class Main {
         final String jdbcUser = properties.getProperty("jdbc_user");
         final String jdbcPassword = properties.getProperty("jdbc_password");
 
+        PGSimpleDataSource pgSimpleDataSource = new PGSimpleDataSource();
+        pgSimpleDataSource.setDatabaseName(jdbcName);
+        pgSimpleDataSource.setUser(jdbcUser);
+        pgSimpleDataSource.setPassword(jdbcPassword);
+
         Flyway flyway = Flyway.configure().dataSource(jdbcUrl, jdbcUser, jdbcPassword)
                 .load();
         flyway.migrate();
 
-        PGSimpleDataSource dataSource = new PGSimpleDataSource();
-        dataSource.setDatabaseName(jdbcName);
-        dataSource.setUser(jdbcUser);
-        dataSource.setPassword(jdbcPassword);
-
-        JdbcProductDao jdbcProductDao = new JdbcProductDao(dataSource);
-        JdbcUserDao jdbcUserDao = new JdbcUserDao(dataSource);
+        JdbcProductDao jdbcProductDao = new JdbcProductDao(pgSimpleDataSource);
+        JdbcUserDao jdbcUserDao = new JdbcUserDao(pgSimpleDataSource);
 
         List<String> userTokens = Collections.synchronizedList(new ArrayList<>());
 
@@ -53,10 +53,11 @@ public class Main {
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
 
         context.addServlet(new ServletHolder(showAllProductsServlet), "/products");
-        context.addServlet(new ServletHolder(showAllProductsServlet), "/*");
 
         context.addServlet(new ServletHolder(new AddProductServlet(productService)), "/products/add");
         context.addServlet(new ServletHolder(new EditProductServlet(productService)), "/products/edit");
+        context.addServlet(new ServletHolder(new DeleteProductServlet(productService, securityService)), "/products/delete/*");
+        context.addServlet(new ServletHolder(new ProductCartServlet(productService, securityService)), "/products/cart");
         context.addServlet(new ServletHolder(new LoginServlet(userService, userTokens)), "/login");
         context.addServlet(new ServletHolder(new LogoutServlet()), "/logout");
         context.addServlet(new ServletHolder(new RegisterServlet(userService)), "/register");

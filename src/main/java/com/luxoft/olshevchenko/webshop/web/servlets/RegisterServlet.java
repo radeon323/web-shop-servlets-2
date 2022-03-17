@@ -4,6 +4,7 @@ import com.luxoft.olshevchenko.webshop.entity.User;
 import com.luxoft.olshevchenko.webshop.service.SecurityService;
 import com.luxoft.olshevchenko.webshop.service.UserService;
 import com.luxoft.olshevchenko.webshop.web.templater.PageGenerator;
+import lombok.SneakyThrows;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author Oleksandr Shevchenko
@@ -30,7 +32,7 @@ public class RegisterServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         try {
             String email = request.getParameter("email");
             String password = request.getParameter("password");
@@ -53,38 +55,28 @@ public class RegisterServlet extends HttpServlet {
 
                 } else {
                     String errorMsg = "Please fill up all fields!";
-                    Map<String, Object> parameters = Map.of("errorMsg", errorMsg);
-                    String pageError = PageGenerator.getPage("register.html", parameters);
-                    response.getWriter().write(pageError);
+                    writeErrorResponse(response, errorMsg);
                 }
-
             } else {
                 String errorMsg = "This user is already exist! <a href='/login'> Login page</a>";
-                Map<String, Object> parameters = Map.of("errorMsg", errorMsg);
-                String pageError = PageGenerator.getPage("register.html", parameters);
-                response.getWriter().write(pageError);
+                writeErrorResponse(response, errorMsg);
             }
-
-
         } catch (IOException e) {
-//                throw new NullPointerException();
             String errorMsg = "Please fill up all fields!";
-            Map<String, Object> parameters = Map.of("errorMsg", errorMsg);
-            String pageError = PageGenerator.getPage("register.html", parameters);
-            response.getWriter().write(pageError);
+            writeErrorResponse(response, errorMsg);
+            throw new NullPointerException();
         }
-
     }
 
     private User getUserFromRequest(HttpServletRequest request) throws SQLException {
 
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+        String gender = Optional.ofNullable(request.getParameter("gender")).orElse("");
+        String firstName = Optional.ofNullable(request.getParameter("firstName")).orElse("");
+        String lastName = Optional.ofNullable(request.getParameter("lastName")).orElse("");
+        String about = Optional.ofNullable(request.getParameter("about")).orElse("");
 
-        String gender = nullOff("gender", request);
-        String firstName = nullOff("firstName", request);
-        String lastName = nullOff("lastName", request);
-        String about = nullOff("about", request);
         int age = 0;
         try {
             age = Integer.parseInt(request.getParameter("age"));
@@ -110,14 +102,11 @@ public class RegisterServlet extends HttpServlet {
                 .build();
     }
 
-    private String nullOff(String txt, HttpServletRequest request) {
-        String text = null;
-        if(request.getParameter(txt) == null) {
-            text = "";
-        } else {
-            text = request.getParameter(txt);
-        }
-        return text;
+    @SneakyThrows
+    private void writeErrorResponse(HttpServletResponse response, String errorMsg) {
+        Map<String, Object> parameters = Map.of("errorMsg", errorMsg);
+        String pageError = PageGenerator.getPage("register.html", parameters);
+        response.getWriter().write(pageError);
     }
 
 

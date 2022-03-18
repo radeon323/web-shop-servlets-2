@@ -54,6 +54,7 @@
             <th scope="col">Price</th>
             <th scope="col">Quantity</th>
             <th scope="col ">Total sum</th>
+            <th scope="col ">Action</th>
         </tr>
         </thead>
         <tbody>
@@ -66,13 +67,14 @@
                             <input required type="number" step="1" min="1" name="quantity" placeholder="${product.quantity}" >
                         </td>
                         <td>
-
                             ${product.price * product.quantity}
                             <#if login == "true">
-
                             <#else>
-
                             </#if>
+                        </td>
+                        <td>
+                            <a href='/cart/delete?id=${product.id}' type="button" class="btn btn-outline-dark">Delete</a>
+                            <a href='/cart/update?id=${product.id}' type="button" class="btn btn-outline-dark">Update</a>
                         </td>
                     </tr>
         </#list>

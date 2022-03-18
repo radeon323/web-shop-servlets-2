@@ -33,9 +33,6 @@ public class ProductCartServlet extends HttpServlet {
         response.getWriter().write(page);
     }
 
-
-
-
     private void dataForProductsList(HttpServletRequest request, HashMap<String, Object> parameters) {
 
         HttpSession session = request.getSession();
@@ -43,8 +40,8 @@ public class ProductCartServlet extends HttpServlet {
         products.sort(Comparator.comparingInt(Product::getId));
 
         Set<ProductForCart> productsForCart = new HashSet<>();
-        int quantity = 1;
         for (int i = 0; i < products.size(); i++) {
+            int quantity = Collections.frequency(products, products.get(i));
             productsForCart.add(dtoConvertToProductForCart(products.get(i), quantity));
         }
 

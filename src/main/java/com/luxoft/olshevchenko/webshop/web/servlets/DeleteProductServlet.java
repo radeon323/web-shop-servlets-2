@@ -26,7 +26,7 @@ public class DeleteProductServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         HashMap<String, Object> parameters = new HashMap<>();
 
         List<Product> products = productService.findAll();

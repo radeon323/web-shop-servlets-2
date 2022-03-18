@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,33 +29,7 @@ public class ShowAllProductsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HashMap<String, Object> parameters = new HashMap<>();
-        dataForProductsList(request, parameters);
-        String page = PageGenerator.getPage("products_list.html", parameters);
-        response.getWriter().write(page);
-    }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-        HashMap<String, Object> parameters = new HashMap<>();
-        dataForProductsList(request, parameters);
-
-        try {
-            int id = Integer.parseInt(request.getParameter("id"));
-
-            productService.remove(id);
-
-            String msgSuccess = "Product " + id + " was successfully deleted!";
-            parameters.put("msgSuccess", msgSuccess);
-
-            String page = PageGenerator.getPage("products_list.html", parameters);
-            response.getWriter().write(page);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void dataForProductsList(HttpServletRequest request, HashMap<String, Object> parameters) {
         List<Product> products = productService.findAll();
         HttpSession session = request.getSession();
         String email = (String) session.getAttribute("email");
@@ -63,6 +38,30 @@ public class ShowAllProductsServlet extends HttpServlet {
         parameters.put("email", email);
         parameters.put("userId", id);
         parameters.put("login", Boolean.toString(securityService.isAuth(request)));
+
+        String page = PageGenerator.getPage("products_list.html", parameters);
+        response.getWriter().write(page);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HashMap<String, Object> parameters = new HashMap<>();
+        HttpSession session = request.getSession();
+        List<Product> cart = (List<Product>) session.getAttribute("cart");
+        String email = (String) session.getAttribute("email");
+        String userId = (String) session.getAttribute("userId");
+
+
+        parameters.put("cart", cart);
+        parameters.put("email", email);
+        parameters.put("userId", userId);
+        parameters.put("login", Boolean.toString(securityService.isAuth(request)));
+
+        int id = Integer.parseInt(request.getParameter("id"));
+        Product product = productService.findById(id);
+        cart.add(product);
+        response.sendRedirect("products");
+
     }
 
 

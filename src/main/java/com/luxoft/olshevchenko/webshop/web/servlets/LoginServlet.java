@@ -2,30 +2,34 @@ package com.luxoft.olshevchenko.webshop.web.servlets;
 
 import com.luxoft.olshevchenko.webshop.entity.Product;
 import com.luxoft.olshevchenko.webshop.entity.User;
+import com.luxoft.olshevchenko.webshop.service.ProductService;
 import com.luxoft.olshevchenko.webshop.service.SecurityService;
 import com.luxoft.olshevchenko.webshop.service.UserService;
+import com.luxoft.olshevchenko.webshop.web.ServiceLocator;
 import com.luxoft.olshevchenko.webshop.web.templater.PageGenerator;
 import lombok.SneakyThrows;
 
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author Oleksandr Shevchenko
  */
 public class LoginServlet extends HttpServlet {
-    private final UserService userService;
-    private final List<String> userTokens;
+//    private final UserService userService;
+//    private final List<String> userTokens;
+//
+//    public LoginServlet(UserService userService, List<String> userTokens) {
+//        this.userService = userService;
+//        this.userTokens = userTokens;
+//    }
 
-    public LoginServlet(UserService userService, List<String> userTokens) {
-        this.userService = userService;
-        this.userTokens = userTokens;
-    }
+    private final UserService userService = ServiceLocator.get(UserService.class);
+    List<String> userTokens = Collections.synchronizedList(new ArrayList<>());
+
+
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -52,10 +56,13 @@ public class LoginServlet extends HttpServlet {
 
             if(user.getPassword().equals(md5)) {
                 String userToken = UUID.randomUUID().toString();
+                String id = String.valueOf(user.getId());
 
                 userTokens.add(userToken);
-                String id = String.valueOf(user.getId());
+
                 HttpSession session = request.getSession();
+
+                session.setAttribute("userTokens", userTokens);
                 session.setAttribute("email", email);
                 session.setAttribute("userId", id);
                 session.setAttribute("cart", cart);

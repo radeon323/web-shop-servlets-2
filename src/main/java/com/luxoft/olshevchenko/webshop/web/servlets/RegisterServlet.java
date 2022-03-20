@@ -3,6 +3,7 @@ package com.luxoft.olshevchenko.webshop.web.servlets;
 import com.luxoft.olshevchenko.webshop.entity.User;
 import com.luxoft.olshevchenko.webshop.service.SecurityService;
 import com.luxoft.olshevchenko.webshop.service.UserService;
+import com.luxoft.olshevchenko.webshop.web.ServiceLocator;
 import com.luxoft.olshevchenko.webshop.web.templater.PageGenerator;
 import lombok.SneakyThrows;
 
@@ -19,11 +20,13 @@ import java.util.Optional;
  * @author Oleksandr Shevchenko
  */
 public class RegisterServlet extends HttpServlet {
-    private final UserService userService;
+//    private final UserService userService;
+//
+//    public RegisterServlet(UserService userService) {
+//        this.userService = userService;
+//    }
 
-    public RegisterServlet(UserService userService) {
-        this.userService = userService;
-    }
+    private final UserService userService = ServiceLocator.get(UserService.class);
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

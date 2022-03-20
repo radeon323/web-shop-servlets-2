@@ -1,6 +1,7 @@
 package com.luxoft.olshevchenko.webshop.web.filter;
 
 import com.luxoft.olshevchenko.webshop.service.SecurityService;
+import com.luxoft.olshevchenko.webshop.web.ServiceLocator;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -13,12 +14,15 @@ import java.util.List;
  */
 public class SecurityFilter implements Filter {
 
-    private final SecurityService securityService;
-    private final List<String> allowedPaths = List.of("/login", "/logout", "/register");
+//    private final SecurityService securityService;
+//    private final List<String> allowedPaths = List.of("/login", "/logout", "/register");
+//
+//    public SecurityFilter(SecurityService securityService) {
+//        this.securityService = securityService;
+//    }
 
-    public SecurityFilter(SecurityService securityService) {
-        this.securityService = securityService;
-    }
+    private final SecurityService securityService = ServiceLocator.get(SecurityService.class);
+    private final List<String> allowedPaths = List.of("/login", "/logout", "/register");
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {

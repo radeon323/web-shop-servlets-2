@@ -1,0 +1,86 @@
+<web-app>
+
+    <servlet>
+        <servlet-name>showAllProductsServlet</servlet-name>
+        <servlet-class>com.luxoft.olshevchenko.webshop.web.servlets.ShowAllProductsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>showAllProductsServlet</servlet-name>
+        <url-pattern>/products</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>addProductServlet</servlet-name>
+        <servlet-class>com.luxoft.olshevchenko.webshop.web.servlets.AddProductServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>addProductServlet</servlet-name>
+        <url-pattern>/products/add</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>deleteProductServlet</servlet-name>
+        <servlet-class>com.luxoft.olshevchenko.webshop.web.servlets.DeleteProductServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>deleteProductServlet</servlet-name>
+        <url-pattern>/products/delete</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>editProductServlet</servlet-name>
+        <servlet-class>com.luxoft.olshevchenko.webshop.web.servlets.EditProductServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>editProductServlet</servlet-name>
+        <url-pattern>/products/edit</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>productCartServlet</servlet-name>
+        <servlet-class>com.luxoft.olshevchenko.webshop.web.servlets.ProductCartServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>productCartServlet</servlet-name>
+        <url-pattern>/products/cart</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>loginServlet</servlet-name>
+        <servlet-class>com.luxoft.olshevchenko.webshop.web.servlets.LoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>loginServlet</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>logoutServlet</servlet-name>
+        <servlet-class>com.luxoft.olshevchenko.webshop.web.servlets.LogoutServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>logoutServlet</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>registerServlet</servlet-name>
+        <servlet-class>com.luxoft.olshevchenko.webshop.web.servlets.RegisterServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>registerServlet</servlet-name>
+        <url-pattern>/register</url-pattern>
+    </servlet-mapping>
+
+
+    <filter>
+        <filter-name>securityFilter</filter-name>
+        <filter-class>com.luxoft.olshevchenko.webshop.web.filter.SecurityFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>securityFilter</filter-name>
+        <url-pattern>*/</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+
+</web-app>

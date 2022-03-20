@@ -4,6 +4,7 @@ import com.luxoft.olshevchenko.webshop.dto.ProductForCart;
 import com.luxoft.olshevchenko.webshop.entity.Product;
 import com.luxoft.olshevchenko.webshop.service.ProductService;
 import com.luxoft.olshevchenko.webshop.service.SecurityService;
+import com.luxoft.olshevchenko.webshop.web.ServiceLocator;
 import com.luxoft.olshevchenko.webshop.web.templater.PageGenerator;
 
 import javax.servlet.http.HttpServlet;
@@ -17,13 +18,15 @@ import java.util.*;
  * @author Oleksandr Shevchenko
  */
 public class ProductCartServlet extends HttpServlet {
-    private final ProductService productService;
-    private final SecurityService securityService;
+//    private final ProductService productService;
+//    private final SecurityService securityService;
+//
+//    public ProductCartServlet(ProductService productService, SecurityService securityService) {
+//        this.productService = productService;
+//        this.securityService = securityService;
+//    }
 
-    public ProductCartServlet(ProductService productService, SecurityService securityService) {
-        this.productService = productService;
-        this.securityService = securityService;
-    }
+    private final SecurityService securityService = ServiceLocator.get(SecurityService.class);
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

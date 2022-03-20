@@ -3,13 +3,13 @@ package com.luxoft.olshevchenko.webshop.web;
 import com.luxoft.olshevchenko.webshop.dao.jdbc.JdbcProductDao;
 import com.luxoft.olshevchenko.webshop.dao.jdbc.JdbcUserDao;
 import com.luxoft.olshevchenko.webshop.service.ProductService;
+import com.luxoft.olshevchenko.webshop.service.SecurityService;
 import com.luxoft.olshevchenko.webshop.service.UserService;
+import com.luxoft.olshevchenko.webshop.web.filter.SecurityFilter;
 import com.luxoft.olshevchenko.webshop.web.templater.PropertiesReader;
 import org.postgresql.ds.PGSimpleDataSource;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * @author Oleksandr Shevchenko
@@ -34,8 +34,21 @@ public class ServiceLocator {
 
         ProductService productService = new ProductService(jdbcProductDao);
         UserService userService = new UserService(jdbcUserDao);
+        SecurityService securityService = new SecurityService();
+
+        SecurityFilter securityFilter = new SecurityFilter();
 
         CONTEXT.put(ProductService.class, productService);
         CONTEXT.put(UserService.class, userService);
+        CONTEXT.put(SecurityService.class, securityService);
+
+        CONTEXT.put(SecurityFilter.class, securityFilter);
     }
+
+    public static <T> T get(Class<T> clazz) {
+        return clazz.cast(CONTEXT.get(clazz));
+    }
+
+
+
 }

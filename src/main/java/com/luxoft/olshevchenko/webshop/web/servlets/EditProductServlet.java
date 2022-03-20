@@ -2,6 +2,8 @@ package com.luxoft.olshevchenko.webshop.web.servlets;
 
 import com.luxoft.olshevchenko.webshop.entity.Product;
 import com.luxoft.olshevchenko.webshop.service.ProductService;
+import com.luxoft.olshevchenko.webshop.service.SecurityService;
+import com.luxoft.olshevchenko.webshop.web.ServiceLocator;
 import com.luxoft.olshevchenko.webshop.web.templater.PageGenerator;
 import lombok.SneakyThrows;
 
@@ -17,11 +19,13 @@ import java.util.Optional;
  * @author Oleksandr Shevchenko
  */
 public class EditProductServlet extends HttpServlet {
-    private final ProductService productService;
+//    private final ProductService productService;
+//
+//    public EditProductServlet(ProductService productService) {
+//        this.productService = productService;
+//    }
 
-    public EditProductServlet(ProductService productService) {
-        this.productService = productService;
-    }
+    private final ProductService productService = ServiceLocator.get(ProductService.class);
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
